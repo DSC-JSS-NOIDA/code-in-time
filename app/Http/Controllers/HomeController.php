@@ -61,26 +61,24 @@ class HomeController extends Controller
             $input_tc = $question->input_tc;
             $output_tc = $question->output_tc;
             
-            $data = array(
-                    'client_secret' => env('HACKEREARTH_SECRET'),
-                    'lang' => $lang,
-                    'source' => $source
-                );
-            
             $url = 'https://api.hackerearth.com/v3/code/run/';
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_URL,$url);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $result = curl_exec($ch);
+            $parameters="client_secret=".env('HACKEREARTH_SECRET')."&source=".$source."&lang=".$lang."&input=".$input_tc;
 
-            return var_dump($result);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_POST,$input_tc);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$parameters);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $response = json_decode($response);
         }
         else
         {
             return "Question Doesn't Exist";
         }
-        return view('submission');
+        return view('submission',compact('response'));
     }
 }
