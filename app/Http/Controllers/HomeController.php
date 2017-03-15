@@ -45,4 +45,11 @@ class HomeController extends Controller
         $question = $question_model->getquestion($ques_id);
         return view('question',compact('question'));
     }
+
+    public function submission(Request $request)
+    {
+        $ques_id = $request->ques_id;
+        
+        return view('submission');
+    }
 }

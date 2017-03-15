@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 Route::get('/rules', 'HomeController@rules')->name('rules');
 Route::get('/question/{id}', 'HomeController@question');
+Route::post('/submission', 'HomeController@submission');
