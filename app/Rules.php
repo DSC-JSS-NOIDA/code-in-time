@@ -15,7 +15,7 @@ class Rules extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','college','year','mobile'
+        'rule'
     ];
 
     /**
@@ -24,6 +24,12 @@ class Rules extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+
     ];
+
+    public function getallrules()
+    {
+        $rules = self::all();
+        return $rules;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Question;
+use App\Rules;
 
 class HomeController extends Controller
 {
@@ -33,5 +34,14 @@ class HomeController extends Controller
     public function rules()
     {
         $rules_model = new Rules;
+        $rules = $rules_model->getallrules();
+        $rules_counter = 1;
+        return view('rules',compact('rules','rules_counter'));
+    }
+
+    public function question($ques_id)
+    {
+        $question_model = new Question;
+        
     }
 }
