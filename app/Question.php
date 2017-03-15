@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Question extends Authenticatable
 {
     use Notifiable;
 
@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','college','year','mobile'
+        'title','details','constraint','sample','input_tc','output_tc','max_score','current_score','currect_sub','attempted'
     ];
 
     /**
@@ -24,6 +24,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        
     ];
+
+    public function getallques()
+    {
+        $questions = self::all();
+        return $questions;
+    }
 }
