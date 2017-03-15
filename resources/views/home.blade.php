@@ -21,7 +21,7 @@
                             @foreach($questions as $question)
                                 <tr>
                                     <td>{{$ques_counter++}}</td>
-                                    <td>{{$question->title}}</td>
+                                    <td><a href="{{URL::to('question/'.$question->id)}}">{{$question->title}}</a></td>
                                     <td>{{$question->attempted}}</td>
                                     <td>{{$question->max_score}}</td>
                                     <td>{{$question->current_score}}</td>

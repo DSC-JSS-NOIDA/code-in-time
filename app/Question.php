@@ -32,4 +32,10 @@ class Question extends Authenticatable
         $questions = self::all();
         return $questions;
     }
+    
+    public function getquestion($ques_id)
+    {
+        $question = self::where('id',$ques_id)->first();
+        return $question;
+    }
 }

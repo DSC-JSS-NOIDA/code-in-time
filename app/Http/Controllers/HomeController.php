@@ -42,6 +42,7 @@ class HomeController extends Controller
     public function question($ques_id)
     {
         $question_model = new Question;
-        
+        $question = $question_model->getquestion($ques_id);
+        return view('question',compact('question'));
     }
 }
