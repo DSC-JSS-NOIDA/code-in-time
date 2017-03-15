@@ -42,14 +42,15 @@
                             <input type="hidden" value="{{$question->id}}" name="ques_id" readonly="" />
                             <div class="form-group">
                               <label for="lang">Select Language:</label>
-                              <select class="form-control" id="lang" required="">
+                              <select class="form-control" id="lang" required="" name="lang">
                                 <option lang="c_cpp" value="C">C</option>
                                 <option lang="c_cpp" value="CPP">C++</option>
                                 <option lang="java" value="JAVA">Java</option>
                                 <option lang="python" value="PYTHON">Python</option>
                               </select>
                             </div>     
-                            <textarea type="text" name="source" id="editor"></textarea>
+                            <input type="hidden" name="source" value="" class="source">
+                            <textarea type="text" id="editor"></textarea>
                             <input type="submit" class="btn btn-primary" name="submit" value="Submit">
                         </form>
                     @endif
@@ -78,7 +79,12 @@
                 console.log(lang);
                 editor.session.setMode("ace/mode/"+lang);
             })
-        })
+        });
+
+        editor.getSession().on("change", function () {
+          $(".source").val(editor.getSession().getValue());
+        });
+
     });
 
 </script>

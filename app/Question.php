@@ -38,4 +38,13 @@ class Question extends Authenticatable
         $question = self::where('id',$ques_id)->first();
         return $question;
     }
+
+    public function validate($ques_id)
+    {
+        $question = self::where('id',$ques_id)->first();
+        if(empty($question))
+            return 0;
+        else
+            return 1;
+    }
 }
