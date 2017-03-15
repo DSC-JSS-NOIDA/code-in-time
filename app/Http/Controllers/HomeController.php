@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Question;
 use App\Rules;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -58,11 +60,14 @@ class HomeController extends Controller
         if($validate_ques && !empty($source) && !empty($lang))
         {
             $question = $question_model->getquestion($ques_id);
-            $input_tc = $question->input_tc;
-            $output_tc = $question->output_tc;
-            
+            $input_file = $question->input_tc;
+            $output_file = $question->output_tc;
+            $source = urlencode($source);
+
+            $input_tc = trim(File::get(storage_path('testcases/'.$input_file)));
+            $output_tc = trim(File::get(storage_path('testcases/'.$output_file)));
             $url = 'https://api.hackerearth.com/v3/code/run/';
-            $parameters="client_secret=".env('HACKEREARTH_SECRET')."&source=".$source."&lang=".$lang."&input=".$input_tc;
+            $parameters="client_secret=".env('HACKEREARTH_SECRET')."&source=".$source."&lang=".$lang."&input=".$input_tc."&time_limit=2";
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -74,6 +79,30 @@ class HomeController extends Controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response = curl_exec($ch);
             $response = json_decode($response);
+
+            if($response->compile_status!="OK" || $response->run_status->status=="CE")
+            {
+                echo "Compilation Error";
+                echo $response->compile_status;
+            }
+            else if($response->compile_status=="OK" && $response->run_status->status=="TLE")
+            {
+                echo "Time Limit Exceeded";
+                echo "Time Used:" . $response->run_status->time_used;
+            }
+            else if($response->compile_status=="OK" && $response->run_status->status=="RE")
+            {
+                echo "Runtime Error";   
+            }
+            else if($response->compile_status=="OK" && $response->run_status->status=="AC")
+            {
+                $output = trim($response->run_status->output);
+                if($output_tc==$output)
+                    echo "Correct Answer";
+                else
+                    echo "Wrong Answer";
+            }
+            return;
         }
         else
         {
