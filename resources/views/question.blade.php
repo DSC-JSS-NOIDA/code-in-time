@@ -37,7 +37,7 @@
                             {{$question->sample}}
                             <hr/>
 
-                            <form action="{{URL::to('/submission')}}" method="post" id="form">
+                            <form id="form">
                                 {{csrf_field()}}
                                 <input type="hidden" value="{{$question->id}}" name="ques_id" readonly="" />
                                 <div class="form-group">
@@ -51,8 +51,9 @@
                                 </div>     
                                 <input type="hidden" name="source" value="" class="source">
                                 <textarea type="text" id="editor"></textarea>
-                                <input type="submit" class="btn btn-primary" name="submit" value="Submit">
+                                <input type="submit" id="form_submit_btn" class="btn btn-primary" name="submit" value="Submit">
                             </form>
+                            <div id="submission_result"></div>
                         @endif
                     </div>
                 </div>
