@@ -80,7 +80,7 @@ class HomeController extends Controller
             $response = curl_exec($ch);
             $response = json_decode($response);
 
-            if($response->compile_status!="OK" || $response->run_status->status=="CE")
+            if($response->run_status->status=="CE")
             {
                 echo "Compilation Error";
                 echo $response->compile_status;
@@ -102,6 +102,8 @@ class HomeController extends Controller
                 else
                     echo "Wrong Answer";
             }
+            var_dump($output_tc);
+            var_dump($output);
             return;
         }
         else
