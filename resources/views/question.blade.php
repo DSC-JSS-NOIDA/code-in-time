@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-7">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @if(empty($question))
@@ -13,50 +13,87 @@
                         <div>{{$question->title}}</div>
                     @endif
 
-                <div class="panel-body">
-                    @if(empty($question))
-                        <h1>Question Brewing Up</h1>
-                    @else
+                    <div class="panel-body">
+                        @if(empty($question))
+                            <h1>Question Brewing Up</h1>
+                        @else
 
-                        <h4>Stats:</h4>
-                        Max Score: {{$question->max_score}} |
-                        Current Score: {{$question->current_score}} |
-                        Correct Submissions: {{$question->correct_sub}} |
-                        Attempts: {{$question->attempted}}
-                        <hr/>
+                            <h4>Stats:</h4>
+                            Max Score: {{$question->max_score}} |
+                            Current Score: {{$question->current_score}} |
+                            Correct Submissions: {{$question->correct_sub}} |
+                            Attempts: {{$question->attempted}}
+                            <hr/>
 
-                        <h4>Details:</h4>
-                        {{$question->details}}
-                        <hr/>
+                            <h4>Details:</h4>
+                            {{$question->details}}
+                            <hr/>
 
-                        <h4>Constraints:</h4>
-                        {{$question->constraint}}
-                        <hr/>
+                            <h4>Constraints:</h4>
+                            {{$question->constraint}}
+                            <hr/>
 
-                        <h4>Sample TestCase:</h4>
-                        {{$question->sample}}
-                        <hr/>
+                            <h4>Sample TestCase:</h4>
+                            {{$question->sample}}
+                            <hr/>
 
-                        <form action="{{URL::to('/submission')}}" method="post" id="form">
-                            {{csrf_field()}}
-                            <input type="hidden" value="{{$question->id}}" name="ques_id" readonly="" />
-                            <div class="form-group">
-                              <label for="lang">Select Language:</label>
-                              <select class="form-control" id="lang" required="" name="lang">
-                                <option lang="c_cpp" value="C">C</option>
-                                <option lang="c_cpp" value="CPP">C++</option>
-                                <option lang="java" value="JAVA">Java</option>
-                                <option lang="python" value="PYTHON">Python</option>
-                              </select>
-                            </div>     
-                            <input type="hidden" name="source" value="" class="source">
-                            <textarea type="text" id="editor"></textarea>
-                            <input type="submit" class="btn btn-primary" name="submit" value="Submit">
-                        </form>
-                    @endif
+                            <form action="{{URL::to('/submission')}}" method="post" id="form">
+                                {{csrf_field()}}
+                                <input type="hidden" value="{{$question->id}}" name="ques_id" readonly="" />
+                                <div class="form-group">
+                                  <label for="lang">Select Language:</label>
+                                  <select class="form-control" id="lang" required="" name="lang">
+                                    <option lang="c_cpp" value="C">C</option>
+                                    <option lang="c_cpp" value="CPP">C++</option>
+                                    <option lang="java" value="JAVA">Java</option>
+                                    <option lang="python" value="PYTHON">Python</option>
+                                  </select>
+                                </div>     
+                                <input type="hidden" name="source" value="" class="source">
+                                <textarea type="text" id="editor"></textarea>
+                                <input type="submit" class="btn btn-primary" name="submit" value="Submit">
+                            </form>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>Submissions</h2></div>
+
+                <div class="panel-body">
+                     <table class="table">
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name </th>
+                        <th>Result</th>
+                        <th>Marks</th>
+                        <th>Time</th>
+                    </tr>
+                    <?php $i=($submissions->currentPage()>1)?($submissions->currentPage()-1)*5+1:1;?>
+                    @if(count($submissions))
+                        @foreach($submissions as $submission)
+                            <tr>
+                                <td>{{$i++}}</td>
+                                <td>{{$submission->name}}</td>
+                                <td>{{$submission->status}}</td>
+                                <td>{{$submission->marks}}</td>
+                                <td>{{\Carbon\Carbon::parse($submission->created_at)->diffForHumans()}}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                        <td>No submissions</td><td></td><td></td><td></td>
+                        </tr>
+                    @endif  
+                    </table>
+                    {{ $submissions->links() }}  
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

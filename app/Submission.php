@@ -38,4 +38,15 @@ class Submission extends Authenticatable
         return $submissions;
     }
 
+    public function get_question_submissions($q_id){
+        $submissions = DB::table('submissions')
+            ->join('questions', 'questions.id','=','submissions.ques_id')
+            ->join('users','users.id','=','submissions.user_id')
+            ->select('users.name', 'submissions.*','questions.title')
+            ->where('submissions.ques_id','=',$q_id)
+            ->latest()
+            ->paginate(5);
+        return $submissions;
+    }
+
 }
