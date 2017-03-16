@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 use App\Question;
 use App\Rules;
 use App\Submission;
@@ -89,30 +90,42 @@ class HomeController extends Controller
             $response = curl_exec($ch);
             $response = json_decode($response);
 
+            $marks_scored = 0;
             if($response->run_status->status=="CE")
             {
+                $status = "CE";
                 echo "Compilation Error";
                 echo $response->compile_status;
             }
             else if($response->compile_status=="OK" && $response->run_status->status=="TLE")
             {
+                $status = "TLE";
                 echo "Time Limit Exceeded";
                 echo "Time Used:" . $response->run_status->time_used;
             }
             else if($response->compile_status=="OK" && $response->run_status->status=="RE")
             {
+                $status = "RE";
                 echo "Runtime Error";   
             }
             else if($response->compile_status=="OK" && $response->run_status->status=="AC")
             {
                 $output = trim($response->run_status->output);
                 if($output_tc==$output)
+                {
+                    $status = "AC";
+                    $marks_scored = $question->current_score;
                     echo "Correct Answer";
+                }
                 else
+                {
+                    $status = "WA";
                     echo "Wrong Answer";
+                }
             }
-            var_dump($output_tc);
-            var_dump($output);
+
+            $submission_model = new Submission;
+            $submission_model->add_submission($question->id, Auth::user()->id, $status, $marks_scored);
             return;
         }
         else

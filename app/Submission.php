@@ -49,4 +49,15 @@ class Submission extends Authenticatable
         return $submissions;
     }
 
+    public function add_submission($ques_id, $user_id, $status, $marks)
+    {
+        $submission = new Submission;
+        $submission->ques_id = $ques_id;
+        $submission->user_id = $user_id;
+        $submission->status = $status;
+        $submission->marks = $marks;
+        
+        $submission->save();
+    }
+
 }
