@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Question;
 use App\Rules;
+use App\Submission;
 use File;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,8 +30,12 @@ class HomeController extends Controller
     {
         $question_model = new Question;
         $questions = $question_model->getallques();
+
+        $submission_model = new Submission;
+        $submissions = $submission_model->get_all_submissions();
+
         $ques_counter = 1;
-        return view('home',compact('questions','ques_counter'));
+        return view('home',compact('questions','ques_counter','submissions'));
     }
 
     public function rules()
