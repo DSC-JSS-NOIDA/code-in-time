@@ -24,6 +24,6 @@ Route::post('/submission', 'HomeController@submission');
 Route::get('/leaderboard', 'HomeController@leaderboard')->name('leaderboard');
 
 Route::group(['middleware' => ['auth', 'admin']], function() {
-     // protected routes here
-     Route::get('admin', 'AdminController@index');
+    Route::get('admin', 'AdminController@index');
+    Route::post('addques', 'AdminController@addques');
 });
