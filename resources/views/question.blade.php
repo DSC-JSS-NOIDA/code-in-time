@@ -53,7 +53,7 @@
                                 <textarea type="text" id="editor"></textarea>
                                 <input type="submit" id="form_submit_btn" class="btn btn-primary" name="submit" value="Submit">
                             </form>
-                            <div id="submission_result"></div>
+                            <h3><div id="submission_result"></div></h3>
                         @endif
                     </div>
                 </div>
