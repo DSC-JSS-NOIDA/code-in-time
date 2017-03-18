@@ -23,6 +23,7 @@ Route::get('/question/{id}', 'HomeController@question');
 Route::post('/submission', 'HomeController@submission');
 Route::get('/leaderboard', 'HomeController@leaderboard')->name('leaderboard');
 
-Route::get('admin', ['middleware' => ['auth', 'admin'], function() {
-    return "this page requires that you be logged in and an Admin";
-}]);
+Route::group(['middleware' => ['auth', 'admin']], function() {
+     // protected routes here
+     Route::get('admin', 'AdminController@index');
+});
