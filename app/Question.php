@@ -47,4 +47,19 @@ class Question extends Authenticatable
         else
             return 1;
     }
+
+    public function update_cur_marks($ques_id){
+        $question=self::find($ques_id);
+        
+        $question->current_score=($question->current_score>=40)?$question->current_score/=2:10;
+        $question->correct_sub++;
+        $question->save();
+    }
+
+    public function increment_attempted($ques_id){
+        $question=self::find($ques_id);
+        $question->attempted++;
+        $question->save();
+
+    }
 }

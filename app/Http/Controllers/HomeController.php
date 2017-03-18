@@ -7,6 +7,7 @@ use Auth;
 use App\Question;
 use App\Rules;
 use App\Submission;
+use App\User;
 use File;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,6 +48,11 @@ class HomeController extends Controller
         return view('rules',compact('rules','rules_counter'));
     }
 
+    public function leaderboard(){
+        $user_model = new \App\User;
+        $users = $user_model->get_users();
+        return view('leaderboard',['users'=>$users]);
+    }
     public function question($ques_id)
     {
         $question_model = new Question;
@@ -100,12 +106,14 @@ class HomeController extends Controller
             else if($response->compile_status=="OK" && $response->run_status->status=="TLE")
             {
                 $status = "TLE";
+                $question->increment_attempted($ques_id);
                 echo "Time Limit Exceeded";
                 echo "Time Used:" . $response->run_status->time_used;
             }
             else if($response->compile_status=="OK" && $response->run_status->status=="RE")
             {
                 $status = "RE";
+                $question->increment_attempted($ques_id);
                 echo "Runtime Error";   
             }
             else if($response->compile_status=="OK" && $response->run_status->status=="AC")
@@ -114,18 +122,29 @@ class HomeController extends Controller
                 if($output_tc==$output)
                 {
                     $status = "AC";
-                    $marks_scored = $question->current_score;
+                    
+                    $user_model = new User;
+                    
+                    $marks_scored=$user_model->update_marks(Auth::user()->id,$ques_id);
+                    if($marks_scored)
+                    $question_model->update_cur_marks($ques_id);
+                    
+                    
+                    $question->increment_attempted($ques_id);
                     echo "Correct Answer";
                 }
                 else
                 {
                     $status = "WA";
+                    $question->increment_attempted($ques_id);
                     echo "Wrong Answer";
                 }
             }
 
             $submission_model = new Submission;
             $submission_model->add_submission($question->id, Auth::user()->id, $status, $marks_scored);
+
+            
             return;
         }
         else

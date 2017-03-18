@@ -26,7 +26,26 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function get_users(){
+        return self::all();
+    }
 
+    public function update_marks($user_id,$quest_id){
+        $question_model = new \App\Question;
+        $question = $question_model->getquestion($quest_id);
+
+        $user=self::find($user_id);
+        if(strpos($user->solved_ques, $question->title)===false)
+        {
+            $user->score=$user->score+$question->current_score;
+            $user->solved_ques = $user->solved_ques.$question->title."(".$question->current_score.")";
+            $user->save();
+            return $user->score;
+        }
+        return 0;
+    }
+    
     public function isAdmin()
     {
         return $this->role; // this looks for an admin column in your users table

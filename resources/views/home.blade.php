@@ -28,7 +28,7 @@
                                     @if($question->attempted==0)
                                         <td>0</td>
                                     @else
-                                        <td>{{$question->correct_sub/$question->attempted}}</td>
+                                        <td>{{$question->correct_sub*100/$question->attempted}}</td>
                                     @endif
                                 </tr>   
                             @endforeach
