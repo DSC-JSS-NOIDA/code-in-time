@@ -22,3 +22,8 @@ Route::get('/rules', 'HomeController@rules')->name('rules');
 Route::get('/question/{id}', 'HomeController@question');
 Route::post('/submission', 'HomeController@submission');
 Route::get('/leaderboard', 'HomeController@leaderboard')->name('leaderboard');
+
+Route::group(['middleware' => ['auth', 'admin']], function() {
+     // protected routes here
+     Route::get('admin', 'AdminController@index');
+});
