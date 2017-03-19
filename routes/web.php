@@ -27,4 +27,5 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('admin', 'AdminController@index');
     Route::post('addques', 'AdminController@addques');
     Route::get('edit/{id}', 'AdminController@editor');
+    Route::get('delete/{id}', 'AdminController@delete');
 });

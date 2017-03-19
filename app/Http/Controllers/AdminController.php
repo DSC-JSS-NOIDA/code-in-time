@@ -76,4 +76,12 @@ class AdminController extends Controller
 		$question->save();
     	return redirect('/admin');
     }
+
+    public function delete($ques_id)
+    {
+    	$question = Question::find($ques_id);
+    	if($question)
+    		$question->delete();
+    	return redirect('/admin');
+    }
 }
