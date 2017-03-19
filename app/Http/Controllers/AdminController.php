@@ -21,7 +21,18 @@ class AdminController extends Controller
     {
     	$question_model = new Question;
     	$questions = $question_model->getallques();
-    	return view('admin.home', compact('questions'));
+    	$counter = 1;
+    	return view('admin.home', compact('questions','counter'));
+    }
+
+    public function editor($ques_id)
+    {
+    	$question_model = new Question;
+    	if($question_model->validate($ques_id))
+    		$question = $question_model->getquestion($ques_id);
+    	else
+    		$question = $question_model;
+    	return view('admin.dashboard',compact('question','ques_id'));
     }
 
     public function addques(Request $request)
@@ -29,7 +40,13 @@ class AdminController extends Controller
     	$input_filename = rand().basename($_FILES["input_tc"]["name"]);
     	$output_filename = rand().basename($_FILES["output_tc"]["name"]);
 
-    	$question = new Question;
+
+		$question = new Question;
+		if(!$question->validate($request->ques_id))
+			$question = new Question;
+		else
+			$question = Question::find($request->ques_id);
+
     	$question->title = $request->title;
     	$question->details = $request->details;
     	$question->constraint = $request->constraints;
@@ -48,11 +65,15 @@ class AdminController extends Controller
     	if (file_exists($output_target_file))
     		return "Output Filename Already Exists";
 
+         if ( !file_exists($target_dir) ) {
+             $oldmask = umask(0);  // helpful when used in linux server  
+             mkdir ($target_dir, 0744);
+         }
+
 		move_uploaded_file($_FILES["input_tc"]["tmp_name"], $input_target_file);
 		move_uploaded_file($_FILES["output_tc"]["tmp_name"], $output_target_file);
 
 		$question->save();
-		$success = "Question Added";
-    	return view('admin.home', compact('success'));
+    	return redirect('/admin');
     }
 }

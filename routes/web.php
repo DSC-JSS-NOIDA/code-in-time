@@ -26,4 +26,5 @@ Route::get('/leaderboard', 'HomeController@leaderboard')->name('leaderboard');
 Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('admin', 'AdminController@index');
     Route::post('addques', 'AdminController@addques');
+    Route::get('edit/{id}', 'AdminController@editor');
 });
