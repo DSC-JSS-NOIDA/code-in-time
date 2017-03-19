@@ -96,6 +96,7 @@ class HomeController extends Controller
             $response = curl_exec($ch);
             $response = json_decode($response);
 
+            var_dump($response);    
             $marks_scored = 0;
             if($response->run_status->status=="CE")
             {
@@ -144,7 +145,6 @@ class HomeController extends Controller
             $submission_model = new Submission;
             $submission_model->add_submission($question->id, Auth::user()->id, $status, $marks_scored);
 
-            
             return;
         }
         else

@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	$("#form").submit(function(e){
 		$("#form_submit_btn").hide();
-		$("#submission_result").html('<br><br>');
+		var img = "<img src='/loading.gif' width=50px />"
+		$("#submission_result").html(img);
 		$.ajax({
 			type: 'POST',
 			url: '/submission',
@@ -9,6 +10,10 @@ $(document).ready(function(){
 			success: function(data) {
 				$("#form_submit_btn").show();
 				$("#submission_result").html(data);
+			},
+			error: function(data){
+				$("#form_submit_btn").show();
+				$("#submission_result").html("Some Error Occured, Pls try again.");
 			}
 		});
 		e.preventDefault();
