@@ -24,11 +24,11 @@
 			</div>			
 			<div class="form-group">
 			  <label for="input_tc">Input TC:</label>
-			  <input type="file" name="input_tc" id="input_tc" required="">
+			  <input type="file" name="input_tc" id="input_tc" required=""><a href="/download/{{$question->input_tc}}">Download</a>
 			</div>
 			<div class="form-group">
 			  <label for="output_tc">Output TC:</label>
-			  <input type="file" name="output_tc" id="output_tc" required="">
+			  <input type="file" name="output_tc" id="output_tc" required=""><a href="/download/{{$question->output_tc}}">Download</a>
 			</div>
 			<div class="form-group">
 			  <label for="max_score">Max Score:</label>
