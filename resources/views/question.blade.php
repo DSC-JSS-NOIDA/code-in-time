@@ -10,7 +10,7 @@
                     @if(empty($question))
                         <div>Invalid Question</div>
                     @else
-                        <div>{{$question->title}}</div>
+                        <div>{!!$question->title!!}</div>
                     @endif
 
                     <div class="panel-body">
@@ -19,27 +19,27 @@
                         @else
 
                             <h4>Stats:</h4>
-                            Max Score: {{$question->max_score}} |
-                            Current Score: {{$question->current_score}} |
-                            Correct Submissions: {{$question->correct_sub}} |
-                            Attempts: {{$question->attempted}}
+                            Max Score: {!!$question->max_score!!} |
+                            Current Score: {!!$question->current_score!!} |
+                            Correct Submissions: {!!$question->correct_sub!!} |
+                            Attempts: {!!$question->attempted!!}
                             <hr/>
 
                             <h4>Details:</h4>
-                            {{$question->details}}
+                            {!!$question->details!!}
                             <hr/>
 
                             <h4>Constraints:</h4>
-                            {{$question->constraint}}
+                            {!!$question->constraint!!}
                             <hr/>
 
                             <h4>Sample TestCase:</h4>
-                            {{$question->sample}}
+                            {!!$question->sample!!}
                             <hr/>
 
                             <form id="form">
-                                {{csrf_field()}}
-                                <input type="hidden" value="{{$question->id}}" name="ques_id" readonly="" />
+                                {!!csrf_field()!!}
+                                <input type="hidden" value="{!!$question->id!!}" name="ques_id" readonly="" />
                                 <div class="form-group">
                                   <label for="lang">Select Language:</label>
                                   <select class="form-control" id="lang" required="" name="lang">
@@ -77,11 +77,11 @@
                     @if(count($submissions))
                         @foreach($submissions as $submission)
                             <tr>
-                                <td>{{$i++}}</td>
-                                <td>{{$submission->name}}</td>
-                                <td>{{$submission->status}}</td>
-                                <td>{{$submission->marks}}</td>
-                                <td>{{\Carbon\Carbon::parse($submission->created_at)->diffForHumans()}}</td>
+                                <td>{!!$i++!!}</td>
+                                <td>{!!$submission->name!!}</td>
+                                <td>{!!$submission->status!!}</td>
+                                <td>{!!$submission->marks!!}</td>
+                                <td>{!!\Carbon\Carbon::parse($submission->created_at)->diffForHumans()!!}</td>
                             </tr>
                         @endforeach
                     @else
@@ -90,7 +90,7 @@
                         </tr>
                     @endif  
                     </table>
-                    {{ $submissions->links() }}  
+                    {!! $submissions->links() !!}  
                 </div>
             </div>
         </div>
