@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function index()
     {
     	$question_model = new Question;
-    	$questions = $question_model->getallques();
+    	$questions = $question_model::all();
     	$counter = 1;
     	return view('admin.home', compact('questions','counter'));
     }
@@ -55,6 +55,7 @@ class AdminController extends Controller
     	$question->output_tc = $output_filename;
     	$question->max_score = $request->max_score;
     	$question->current_score = $request->max_score;
+        $question->active = $request->active;
 
     	$target_dir = storage_path().'/testcases/';//"storage/testcases/";
     	$input_target_file = $target_dir . $input_filename;

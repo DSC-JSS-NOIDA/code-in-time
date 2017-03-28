@@ -38,7 +38,10 @@
 			  <label for="cur_score">Current Score:</label>
 			  <input type="number" name="cur_score" id="cur_score" value="{{$question->current_score}}" required="">
 			</div>
-
+			<div class="form-group">
+			  <label for="active">Active(0 or 1):</label>
+			  <input type="number" name="active" id="active" value="{{$question->active}}" required="">
+			</div>
 			<input type="submit" name="submit" value="Add Question">
 		</form>
 	</div>
