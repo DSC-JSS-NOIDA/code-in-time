@@ -41,7 +41,7 @@ class User extends Authenticatable
             $user->score=$user->score+$question->current_score;
             $user->solved_ques = $user->solved_ques.$question->title."(".$question->current_score.")";
             $user->save();
-            return $user->score;
+            return $question->current_score;
         }
         return 0;
     }
