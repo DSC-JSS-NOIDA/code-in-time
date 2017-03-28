@@ -10,6 +10,7 @@ use App\Submission;
 use App\User;
 use File;
 use Illuminate\Support\Facades\Storage;
+use Unirest;
 
 class HomeController extends Controller
 {
@@ -92,16 +93,32 @@ class HomeController extends Controller
             $url = 'https://api.hackerearth.com/v3/code/run/';
             $parameters="client_secret=".env('HACKEREARTH_SECRET')."&source=".$source."&lang=".$lang."&input=".$input_tc."&time_limit=2";
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-            curl_setopt($ch, CURLOPT_POST,$input_tc);
-            curl_setopt($ch, CURLOPT_POSTFIELDS,$parameters);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            $response = json_decode($response);
+            // $ch = curl_init();
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            // curl_setopt($ch, CURLOPT_POST,$input_tc);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS,$parameters);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // $response = curl_exec($ch);
+            // $response = json_decode($response);
+
+            $response = Unirest\Request::post("https://ideas2it-hackerearth.p.mashape.com/compile/",
+              array(
+                "X-Mashape-Key" => "Gp4jkbZcOpmsheLtgXfNKCwwjN5Jp1TLeO2jsnmcEujniWK7wu",
+                "Content-Type" => "application/x-www-form-urlencoded",
+                "Accept" => "application/json"
+              ),
+              array(
+                "async" => 0,
+                "client_secret" => env('HACKEREARTH_SECRET'),
+                "lang" => $lang,
+                "memory_limit" => 262144,
+                "source" => $source,
+                "time_limit" => 5
+              )
+            );
 
             var_dump($response);    
             $marks_scored = 0;
