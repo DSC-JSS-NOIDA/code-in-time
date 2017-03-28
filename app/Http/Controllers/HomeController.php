@@ -57,11 +57,18 @@ class HomeController extends Controller
     {
         $question_model = new Question;
         $question = $question_model->getquestion($ques_id);
+        
+        if($question->active){
 
         $submission_model = new \App\Submission;
         $submissions = $submission_model->get_question_submissions($ques_id);
 
         return view('question',compact('question','submissions'));
+        }
+        else
+        {
+            return "try something else..";
+        }
     }
 
     public function submission(Request $request)

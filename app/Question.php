@@ -29,7 +29,7 @@ class Question extends Authenticatable
 
     public function getallques()
     {
-        $questions = self::all();
+        $questions = self::all()->where('active',1);
         return $questions;
     }
     
